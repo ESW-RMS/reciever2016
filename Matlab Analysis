@@ -1,0 +1,29 @@
+I1ID = 133892;
+I1ReadAPI = 'D9EP3XE79X4XG0PG';
+I2ID = 133893;
+I2ReadAPI = 'ZOLFHYX3KYVF05CX';
+I3ID = 133895;
+I3ReadAPI = 'ZYZODAOWQIN6LSJ4';
+VID = 133896;
+VReadAPI = 'IZRTD2JZIEBP1FJ5';
+
+writeChannelID = 133826;
+writeAPIKey = '0QV4X6SMH8FFA54C';
+
+I1 = thingSpeakRead(I1ID, 'ReadKey', I1ReadAPI);
+I2 = thingSpeakRead(I2ID, 'ReadKey', I2ReadAPI);
+I3 = thingSpeakRead(I3ID, 'ReadKey', I3ReadAPI);
+V = thingSpeakRead(VID,'ReadKey',VReadAPI);
+
+P = (I1+I2+I3)*V;
+data = [I1, I2, I3, V, P];
+readcmkAPI = 'R3Y4HQAUQFF8BRTR';
+
+CMK = thingSpeakRead(writeChannelID,'ReadKey', readcmkAPI);
+if ~isequal(size(CMK),size(data))
+    thingSpeakWrite(writeChannelID, data, 'WriteKey', writeAPIKey);
+else if  ~isequal(CMK(1,1),data(1,1)) |~isequal(CMK(1,2),data(1,2)) |~isequal(CMK(1,3),data(1,3))|~isequal(CMK(1,4),data(1,4))
+        CMK
+        thingSpeakWrite(writeChannelID, data, 'WriteKey', writeAPIKey);
+    end
+end
